@@ -11,13 +11,9 @@ const CONNECTIONS = [
   [5, 9], [9, 13], [13, 17],
 ];
 
-const BLUE = "#2563eb";
-const BLUE_40 = "#2563eb66";
-const CYAN = "#0891b2";
-const CYAN_40 = "#0891b266";
 const COLORS = [
-  { line: BLUE, glow: BLUE_40 },
-  { line: CYAN, glow: CYAN_40 },
+  { line: "#4ecdc4", glow: "#4ecdc466" },
+  { line: "#88b4d4", glow: "#88b4d466" },
 ];
 
 export default function HandSynthCanvas({ hands, width, height }) {
@@ -33,7 +29,7 @@ export default function HandSynthCanvas({ hands, width, height }) {
     canvas.height = height;
     ctx.clearRect(0, 0, width, height);
 
-    // Fingertip trails
+    // Trails
     const newTrails = [];
     hands.forEach((landmarks, hi) => {
       [4, 8, 12, 16, 20].forEach((i) => {
@@ -47,7 +43,7 @@ export default function HandSynthCanvas({ hands, width, height }) {
     ];
 
     trailsRef.current.forEach((t) => {
-      const alpha = (1 - t.age / 8) * 0.2;
+      const alpha = (1 - t.age / 8) * 0.25;
       const r = (1 - t.age / 8) * 3;
       ctx.beginPath();
       ctx.arc(t.x, t.y, r, 0, Math.PI * 2);
@@ -58,9 +54,8 @@ export default function HandSynthCanvas({ hands, width, height }) {
     hands.forEach((landmarks, handIdx) => {
       const { line, glow } = COLORS[handIdx % 2];
 
-      // Connections — thin, clean
       ctx.lineWidth = 1.5;
-      ctx.globalAlpha = 0.25;
+      ctx.globalAlpha = 0.3;
       ctx.strokeStyle = line;
       CONNECTIONS.forEach(([a, b]) => {
         const pA = landmarks[a];
@@ -72,18 +67,17 @@ export default function HandSynthCanvas({ hands, width, height }) {
       });
       ctx.globalAlpha = 1;
 
-      // Landmarks
       landmarks.forEach((pt, i) => {
         const isFingerTip = [4, 8, 12, 16, 20].includes(i);
         const x = pt.x * width;
         const y = pt.y * height;
 
         if (isFingerTip) {
-          const g = ctx.createRadialGradient(x, y, 0, x, y, 10);
+          const g = ctx.createRadialGradient(x, y, 0, x, y, 12);
           g.addColorStop(0, glow);
           g.addColorStop(1, "transparent");
           ctx.fillStyle = g;
-          ctx.fillRect(x - 10, y - 10, 20, 20);
+          ctx.fillRect(x - 12, y - 12, 24, 24);
 
           ctx.beginPath();
           ctx.arc(x, y, 3, 0, Math.PI * 2);
@@ -92,27 +86,25 @@ export default function HandSynthCanvas({ hands, width, height }) {
         } else {
           ctx.beginPath();
           ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(0,0,0,0.12)";
+          ctx.fillStyle = "rgba(255,255,255,0.25)";
           ctx.fill();
         }
       });
 
-      // Pinch indicator
+      // Pinch
       const thumb = landmarks[4];
       const index = landmarks[8];
       const dist = Math.sqrt((thumb.x - index.x) ** 2 + (thumb.y - index.y) ** 2);
       if (dist < 0.06) {
         const cx = ((thumb.x + index.x) / 2) * width;
         const cy = ((thumb.y + index.y) / 2) * height;
-
         ctx.beginPath();
         ctx.arc(cx, cy, 10, 0, Math.PI * 2);
         ctx.strokeStyle = line;
         ctx.lineWidth = 1.5;
-        ctx.globalAlpha = 0.5;
+        ctx.globalAlpha = 0.6;
         ctx.stroke();
         ctx.globalAlpha = 1;
-
         ctx.beginPath();
         ctx.arc(cx, cy, 3, 0, Math.PI * 2);
         ctx.fillStyle = line;

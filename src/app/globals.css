@@ -1,23 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #fafafa;
-  --surface: #ffffff;
-  --surface-2: #f3f4f6;
-  --inset: #eef0f4;
-  --border: rgba(0, 0, 0, 0.06);
-  --border-2: rgba(0, 0, 0, 0.1);
-  --text-1: #111111;
-  --text-2: #6b7280;
-  --text-3: #9ca3af;
-  --blue: #2563eb;
-  --blue-light: #3b82f6;
-  --blue-soft: #dbeafe;
-  --blue-faint: #eff6ff;
+  --bg-top: #b8c4d0;
+  --bg-bottom: #4a6d8c;
+  --surface: rgba(255, 255, 255, 0.12);
+  --surface-solid: rgba(200, 210, 220, 0.35);
+  --inset: rgba(0, 0, 0, 0.15);
+  --border: rgba(255, 255, 255, 0.18);
+  --border-dark: rgba(0, 0, 0, 0.1);
+  --text-1: #1a1a2e;
+  --text-2: #4a5568;
+  --text-3: rgba(255, 255, 255, 0.55);
+  --text-on-glass: rgba(30, 40, 60, 0.8);
+  --accent: #4ecdc4;
+  --knob-bg: #2d3748;
+  --knob-ring: rgba(255, 255, 255, 0.12);
 }
 
 @theme inline {
-  --color-background: var(--bg);
+  --color-background: var(--bg-top);
   --color-foreground: var(--text-1);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -26,7 +27,8 @@
 * { box-sizing: border-box; }
 
 body {
-  background: var(--bg);
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  min-height: 100vh;
   color: var(--text-1);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   overflow: hidden;
@@ -35,18 +37,20 @@ body {
 
 .panel {
   background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 4px;
 }
 
 .panel-inset {
   background: var(--inset);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
 }
 
 .knob-track {
-  stroke: var(--border-2);
+  stroke: var(--knob-ring);
   fill: none;
   stroke-width: 2.5;
   stroke-linecap: round;
@@ -60,9 +64,9 @@ body {
 }
 
 .knob-dot {
-  fill: var(--surface);
-  stroke: var(--border-2);
-  stroke-width: 0.75;
+  fill: var(--knob-bg);
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 0.5;
 }
 
 @keyframes fade-in {

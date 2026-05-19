@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Hand Synth",
-  description: "Hand tracking generative synthesizer",
+  title: "Aethon",
+  description: "Hand-gesture controlled generative synthesizer",
 };
 
 export default function RootLayout({ children }) {
