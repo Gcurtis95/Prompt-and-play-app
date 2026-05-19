@@ -173,11 +173,42 @@ export default function HandSynth() {
                     onClick={handleStart}
                     disabled={!ready}
                     className="animate-fade-in-3 px-6 py-2 rounded-lg text-[13px] font-medium transition-all duration-200
-                               disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-white"
+                               disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-white mb-10"
                     style={{ background: "var(--blue)" }}
                   >
                     {ready ? "Start Session" : "Loading model..."}
                   </button>
+
+                  {/* Instructions */}
+                  <div className="animate-fade-in-3 w-full max-w-md">
+                    <div className="grid grid-cols-2 gap-5 px-4 py-4 rounded-xl" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
+                      <div>
+                        <div className="text-[10px] font-medium uppercase tracking-[0.1em] mb-2.5" style={{ color: "var(--blue)" }}>
+                          Right Hand
+                        </div>
+                        <div className="space-y-2">
+                          <InstructionRow gesture="Pinch thumb + index" action="Play note" />
+                          <InstructionRow gesture="Move up / down" action="Change pitch" />
+                          <InstructionRow gesture="Spread fingers" action="Open filter" />
+                          <InstructionRow gesture="Move left / right" action="Stereo pan" />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-medium uppercase tracking-[0.1em] mb-2.5" style={{ color: "var(--blue)" }}>
+                          Left Hand
+                        </div>
+                        <div className="space-y-2">
+                          <InstructionRow gesture="Move up / down" action="Reverb amount" />
+                          <InstructionRow gesture="Move left / right" action="Delay amount" />
+                          <InstructionRow gesture="Spread fingers" action="Chorus depth" />
+                          <InstructionRow gesture="Pinch distance" action="Volume" />
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-center mt-3" style={{ color: "var(--text-3)" }}>
+                      Requires camera access. Works best in good lighting with hands clearly visible.
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
@@ -299,6 +330,15 @@ function GRow({ k, v }) {
     <div className="flex items-center justify-between">
       <span className="text-[10px]" style={{ color: "var(--text-3)" }}>{k}</span>
       <span className="text-[10px] font-medium" style={{ color: "var(--text-2)" }}>{v}</span>
+    </div>
+  );
+}
+
+function InstructionRow({ gesture, action }) {
+  return (
+    <div className="flex items-start gap-2">
+      <span className="text-[11px] leading-tight" style={{ color: "var(--text-3)" }}>{gesture}</span>
+      <span className="text-[11px] leading-tight font-medium ml-auto text-right whitespace-nowrap" style={{ color: "var(--text-1)" }}>{action}</span>
     </div>
   );
 }
